@@ -1,4 +1,5 @@
 import { Component, OnInit, HostBinding, Input, SimpleChanges, HostListener, Output, EventEmitter } from '@angular/core';
+import { Block } from '../models/block';
 
 @Component({
   selector: 'rect:[block]',
@@ -6,40 +7,34 @@ import { Component, OnInit, HostBinding, Input, SimpleChanges, HostListener, Out
   styleUrls: ['./block.component.scss']
 })
 export class BlockComponent implements OnInit {
-  @Input("type") blockType:string = 'route';
-  @Input("rowIndex") rowIndex:number = 0;
-  @Input("colIndex") colIndex:number = 0;
-  @Input("size") blockSize:number;
-  @Input("nextBlock") nextBlock:boolean = false;
+  @Input("data") data:Block;
+  @Input("type") type:string;
   @Output() moveNext: EventEmitter<any> = new EventEmitter();
 
-  @HostBinding('class') currentClass:string = this.blockType ;
-  @HostBinding('attr.width') blockWidth:number = this.blockSize-1 ;
-  @HostBinding('attr.height') blockHeight:number = this.blockSize-1 ;
+  @HostBinding('class') currentClass:string;
   @HostBinding('attr.x') x:number;
   @HostBinding('attr.y') y:number;
-
+  @HostBinding('attr.width') blockWidth:number;
+  @HostBinding('attr.height') blockHeight:number;
+  
   @HostListener('click', ['$event.target']) onClick(btn) {
-    console.log("type =", this.blockType);
+    //console.log("type =", this.type);
     //if (this.nextBlock){
-    this.moveNext.emit(this)
+    this.moveNext.emit(this.data)
     //}
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.blockType.currentValue !== this.currentClass){
-      this.currentClass = changes.blockType.currentValue
-    } 
-    
-    this.x=this.rowIndex*this.blockSize
-    this.y=this.colIndex*this.blockSize 
+    this.currentClass = this.type;
+    this.x=this.data.col*this.data.size;
+    this.y=this.data.row*this.data.size; 
     //[attr.width]=size-1 [attr.height]=size-1
   }
   constructor() { }
 
   ngOnInit(): void {
-    this.blockWidth = this.blockSize - 1
-    this.blockHeight = this.blockSize - 1
+    this.blockWidth = this.data.size - 1
+    this.blockHeight = this.data.size - 1
   }
 
 }

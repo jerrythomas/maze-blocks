@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Block } from '../models/block';
 
 @Component({
   selector: 'wrapper',
@@ -7,19 +8,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WrapperComponent implements OnInit {
 
-  data:number[][] = [
-    [0,0,0,0,0,0,0,0,0,0,0,0],
-    [1,1,1,0,0,0,0,0,0,0,0,0],
-    [0,0,1,1,0,0,0,0,0,0,0,0],
-    [0,0,0,1,2,1,0,0,0,0,0,0],
-    [0,0,0,0,0,1,1,1,1,0,0,0],
-    [0,0,0,0,0,0,0,0,1,0,0,0],
-    [0,0,0,0,0,0,0,0,1,0,0,0]
-  ] 
-  startRow :number = 1
-  startCol :number = 0
-  endRow:number = 6
-  endCol:number = 8
+  data:Block[] = [
+    {row:1, col:1},
+    {row:1, col:2},
+    {row:1, col:3},
+    {row:2, col:3},
+    {row:2, col:4},
+    {row:3, col:4},
+    {row:3, col:5},
+    {row:3, col:6},
+    {row:4, col:6},
+    {row:4, col:7},
+    {row:4, col:8},
+    {row:4, col:9},
+    {row:5, col:9},
+    {row:6, col:9}
+  ]
+  
+  currentIndex = 0;
 
   size=20
   cursor : {
@@ -27,26 +33,29 @@ export class WrapperComponent implements OnInit {
     y: number
   }
   constructor() { }
-  moveNext(child){
-    console.log(child)
+
+  getType(index){
+    //console.log(index, this.currentIndex)
+    return (index == this.currentIndex)? 'cursor':'route';
   }
-  getType(value){
-    if (value == 1){
-      return 'route'
-    } else if (value == 2) {
-      return 'cursor'
+  moveNext(child){
+    //console.log(child.index, this.currentIndex)
+    if (child.index == this.currentIndex + 1){
+      //this.data[this.currentIndex].active = false;
+      this.currentIndex++
+      //this.data[this.currentIndex].active = true;
     }
-    return 'blank'
   }
 
   ngOnInit(): void {
-    let rows:number  = this.data.length
-    let cols:number = this.data[0].length
+    let index = 0
+    this.data.forEach(element => {
+      element.size = 20;
+      element.active = (index == 0);
+      element.index = index++;
+    });    
 
-    this.cursor.x = 0
-    this.cursor.y = 0
-    console.log(rows,cols)
-
+    //console.log(this.data)
   }
 
 }
