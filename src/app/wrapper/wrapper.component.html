@@ -1,0 +1,7 @@
+<svg width="500" height="500">
+    <ng-container *ngFor="let row of data; let i = index" >
+      <rect block *ngFor="let col of row; let j = index" (moveNext)="moveNext($event)"  [rowIndex]="i" [colIndex]="j" [size]="20" [type]="getType(col)"></rect>
+    </ng-container>
+  
+</svg>
+
