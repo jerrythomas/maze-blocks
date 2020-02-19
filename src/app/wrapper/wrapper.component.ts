@@ -35,8 +35,13 @@ export class WrapperComponent implements OnInit {
   constructor() { }
 
   getType(index){
-    //console.log(index, this.currentIndex)
-    return (index == this.currentIndex)? 'cursor':'route';
+    let type:string  = 'route';
+    switch(index - this.currentIndex) { 
+      case 0: {type='cursor'; break; }
+      case 1: {type='hint'; break; }
+      default: break; 
+   } 
+   return type;
   }
   moveNext(child){
     //console.log(child.index, this.currentIndex)
